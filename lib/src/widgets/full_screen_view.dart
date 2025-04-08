@@ -65,11 +65,16 @@ class _FullScreenViewState extends State<FullScreenView>
                   child: podCtr.videoCtr == null
                       ? loadingWidget
                       : podCtr.videoCtr!.value.isInitialized
-                          ? _PodCoreVideoPlayer(
-                              tag: widget.tag,
-                              videoPlayerCtr: podCtr.videoCtr!,
-                              videoAspectRatio:
-                                  podCtr.videoCtr?.value.aspectRatio ?? 16 / 9,
+                          ? InteractiveViewer(
+                              panEnabled: true,
+                              minScale: 1.0,
+                              maxScale: 4.0,
+                              child: _PodCoreVideoPlayer(
+                                tag: widget.tag,
+                                videoPlayerCtr: podCtr.videoCtr!,
+                                videoAspectRatio:
+                                    podCtr.videoCtr?.value.aspectRatio ?? 16 / 9,
+                              ),
                             )
                           : loadingWidget,
                 ),
