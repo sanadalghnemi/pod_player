@@ -19,7 +19,7 @@ class _FullScreenViewState extends State<FullScreenView>
   @override
   void initState() {
     super.initState();
-    // Allow fullscreen mode to support both portrait and landscape orientations.
+    // Allow fullscreen mode to support both portrait and landscape orientations
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.landscapeLeft,
@@ -33,8 +33,7 @@ class _FullScreenViewState extends State<FullScreenView>
   
   @override
   void dispose() {
-    // Optionally, reset the orientations upon leaving fullscreen.
-    // For example, if your app is primarily portrait-only, reset it here.
+    // Reset to portrait orientation when leaving fullscreen
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
@@ -52,7 +51,6 @@ class _FullScreenViewState extends State<FullScreenView>
           strokeWidth: 2,
         );
 
-    // Using OrientationBuilder helps us rebuild when the device orientation changes.
     return WillPopScope(
       onWillPop: () async {
         if (kIsWeb) {
@@ -67,32 +65,55 @@ class _FullScreenViewState extends State<FullScreenView>
       },
       child: OrientationBuilder(
         builder: (context, orientation) {
-          // Depending on the orientation, you could even adjust your layout further.
           return Scaffold(
             backgroundColor: Colors.black,
             body: GetBuilder<PodGetXVideoController>(
               tag: widget.tag,
-              builder: (podCtr) => Center(
-                child: ColoredBox(
-                  color: Colors.black,
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    child: Center(
-                      child: podCtr.videoCtr == null
-                          ? loadingWidget
-                          : podCtr.videoCtr!.value.isInitialized
-                              ? _PodCoreVideoPlayer(
-                                  tag: widget.tag,
-                                  videoPlayerCtr: podCtr.videoCtr!,
-                                  videoAspectRatio:
-                                      podCtr.videoCtr?.value.aspectRatio ?? 16 / 9,
-                                )
-                              : loadingWidget,
+              builder: (podCtr) {
+                final videoAspectRatio = podCtr.videoCtr?.value.aspectRatio ?? 16 / 9;
+                final screenSize = MediaQuery.of(context).size;
+                
+                // Calculate the appropriate size based on orientation
+                double width = screenSize.width;
+                double height = screenSize.height;
+                
+                if (orientation == Orientation.landscape) {
+                  // In landscape, we want to fill the screen width
+                  height = width / videoAspectRatio;
+                  if (height > screenSize.height) {
+                    height = screenSize.height;
+                    width = height * videoAspectRatio;
+                  }
+                } else {
+                  // In portrait, we want to fill the screen height
+                  width = height * videoAspectRatio;
+                  if (width > screenSize.width) {
+                    width = screenSize.width;
+                    height = width / videoAspectRatio;
+                  }
+                }
+                
+                return Center(
+                  child: ColoredBox(
+                    color: Colors.black,
+                    child: SizedBox(
+                      width: width,
+                      height: height,
+                      child: Center(
+                        child: podCtr.videoCtr == null
+                            ? loadingWidget
+                            : podCtr.videoCtr!.value.isInitialized
+                                ? _PodCoreVideoPlayer(
+                                    tag: widget.tag,
+                                    videoPlayerCtr: podCtr.videoCtr!,
+                                    videoAspectRatio: videoAspectRatio,
+                                  )
+                                : loadingWidget,
+                      ),
                     ),
                   ),
-                ),
-              ),
+                );
+              },
             ),
           );
         },
