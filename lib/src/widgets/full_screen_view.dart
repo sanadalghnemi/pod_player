@@ -107,6 +107,7 @@ class _FullScreenViewState extends State<FullScreenView>
                                     tag: widget.tag,
                                     videoPlayerCtr: podCtr.videoCtr!,
                                     videoAspectRatio: videoAspectRatio,
+                                    watermark: podCtr.watermark,
                                   )
                                 : loadingWidget,
                       ),
