@@ -4,11 +4,13 @@ class _PodCoreVideoPlayer extends StatelessWidget {
   final VideoPlayerController videoPlayerCtr;
   final double videoAspectRatio;
   final String tag;
+  final Widget? watermark;
 
   const _PodCoreVideoPlayer({
     required this.videoPlayerCtr,
     required this.videoAspectRatio,
     required this.tag,
+    this.watermark,
   });
 
   @override
@@ -50,10 +52,8 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                         podCtr.videoPosition == Duration.zero) {
                       return SizedBox.expand(
                         child: TweenAnimationBuilder<double>(
-                          builder: (context, value, child) => Opacity(
-                            opacity: value,
-                            child: child,
-                          ),
+                          builder: (context, value, child) =>
+                              Opacity(opacity: value, child: child),
                           tween: Tween<double>(begin: 0.7, end: 1),
                           duration: const Duration(milliseconds: 400),
                           child: DecoratedBox(
@@ -98,10 +98,8 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                         case PodVideoState.playing:
                           return Center(
                             child: TweenAnimationBuilder<double>(
-                              builder: (context, value, child) => Opacity(
-                                opacity: value,
-                                child: child,
-                              ),
+                              builder: (context, value, child) =>
+                                  Opacity(opacity: value, child: child),
                               tween: Tween<double>(begin: 1, end: 0),
                               duration: const Duration(seconds: 1),
                               child: const Icon(
@@ -146,6 +144,7 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                                 ),
                         ),
                 ),
+              if (watermark != null) MovingWatermark(child: watermark!),
             ],
           ),
         );

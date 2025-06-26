@@ -1,4 +1,3 @@
-import 'package:flutter/services.dart';
 part of 'package:pod_player/src/pod_player.dart';
 
 class FullScreenView extends StatefulWidget {
@@ -15,7 +14,7 @@ class FullScreenView extends StatefulWidget {
 class _FullScreenViewState extends State<FullScreenView>
     with TickerProviderStateMixin {
   late PodGetXVideoController _podCtr;
-  
+
   @override
   void initState() {
     super.initState();
@@ -25,12 +24,12 @@ class _FullScreenViewState extends State<FullScreenView>
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
-    
+
     _podCtr = Get.find<PodGetXVideoController>(tag: widget.tag);
     _podCtr.fullScreenContext = context;
     _podCtr.keyboardFocusWeb?.removeListener(_podCtr.keyboadListner);
   }
-  
+
   @override
   void dispose() {
     // Reset to portrait orientation when leaving fullscreen
@@ -41,7 +40,7 @@ class _FullScreenViewState extends State<FullScreenView>
     _podCtr.keyboardFocusWeb?.addListener(_podCtr.keyboadListner);
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final loadingWidget = _podCtr.onLoading?.call(context) ??
@@ -70,13 +69,14 @@ class _FullScreenViewState extends State<FullScreenView>
             body: GetBuilder<PodGetXVideoController>(
               tag: widget.tag,
               builder: (podCtr) {
-                final videoAspectRatio = podCtr.videoCtr?.value.aspectRatio ?? 16 / 9;
+                final videoAspectRatio =
+                    podCtr.videoCtr?.value.aspectRatio ?? 16 / 9;
                 final screenSize = MediaQuery.of(context).size;
-                
+
                 // Calculate the appropriate size based on orientation
                 double width = screenSize.width;
                 double height = screenSize.height;
-                
+
                 if (orientation == Orientation.landscape) {
                   // In landscape, we want to fill the screen width
                   height = width / videoAspectRatio;
@@ -92,7 +92,7 @@ class _FullScreenViewState extends State<FullScreenView>
                     height = width / videoAspectRatio;
                   }
                 }
-                
+
                 return Center(
                   child: ColoredBox(
                     color: Colors.black,
