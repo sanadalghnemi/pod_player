@@ -92,7 +92,7 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                             child: Icon(
                               Icons.play_arrow,
                               size: 45,
-                              color: Colors.white,
+                              color: Colors.red,
                             ),
                           );
                         case PodVideoState.playing:

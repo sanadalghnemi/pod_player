@@ -86,7 +86,7 @@ class _AnimatedPlayPauseIconState extends State<_AnimatedPlayPauseIcon>
     return AnimatedIcon(
       icon: AnimatedIcons.play_pause,
       progress: _payCtr,
-      color: Colors.white,
+      color: Colors.red,
       size: widget.size,
     );
   }

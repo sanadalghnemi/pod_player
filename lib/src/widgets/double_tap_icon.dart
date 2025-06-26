@@ -109,7 +109,7 @@ class _DoubleTapIconState extends State<DoubleTapIcon>
           const icon = Icon(
             Icons.play_arrow_sharp,
             size: 32,
-            color: Colors.white,
+            color: Colors.red,
           );
           return Center(
             child: Column(

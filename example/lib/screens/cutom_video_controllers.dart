@@ -226,7 +226,10 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
                   strokeWidth: 1,
                 ),
               )
-            : Icon(!isVideoPlaying! ? Icons.play_arrow : Icons.pause),
+            : Icon(
+                !isVideoPlaying! ? Icons.play_arrow : Icons.pause,
+                color: Colors.red,
+              ),
       ),
     );
   }
