@@ -231,6 +231,20 @@ class PodGetXVideoController extends _PodGesturesController {
           }
         }
       }
+      // Zoom controls
+      if (event.isKeyPressed(LogicalKeyboardKey.equal) || 
+          event.isKeyPressed(LogicalKeyboardKey.add)) {
+        zoomIn();
+        return;
+      }
+      if (event.isKeyPressed(LogicalKeyboardKey.minus)) {
+        zoomOut();
+        return;
+      }
+      if (event.isKeyPressed(LogicalKeyboardKey.digit0)) {
+        resetZoom();
+        return;
+      }
 
       return;
     }

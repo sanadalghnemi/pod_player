@@ -61,6 +61,41 @@ class _MobileOverlay extends StatelessWidget {
                   child: podCtr.videoTitle ?? const SizedBox(),
                 ),
               ),
+              // Zoom controls
+              GetBuilder<PodGetXVideoController>(
+                tag: tag,
+                id: 'zoom',
+                builder: (podCtr) => Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    MaterialIconButton(
+                      toolTipMesg: 'Zoom Out',
+                      color: itemColor,
+                      onPressed: podCtr.videoZoomScale > 0.5 ? podCtr.zoomOut : null,
+                      child: const Icon(Icons.zoom_out),
+                    ),
+                    MaterialIconButton(
+                      toolTipMesg: 'Reset Zoom',
+                      color: itemColor,
+                      onPressed: podCtr.videoZoomScale != 1.0 ? podCtr.resetZoom : null,
+                      child: Text(
+                        '${(podCtr.videoZoomScale * 100).round()}%',
+                        style: const TextStyle(
+                          color: itemColor,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    MaterialIconButton(
+                      toolTipMesg: 'Zoom In',
+                      color: itemColor,
+                      onPressed: podCtr.videoZoomScale < 3.0 ? podCtr.zoomIn : null,
+                      child: const Icon(Icons.zoom_in),
+                    ),
+                  ],
+                ),
+              ),
               MaterialIconButton(
                 toolTipMesg: podCtr.podPlayerLabels.settings,
                 color: itemColor,

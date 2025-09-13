@@ -37,6 +37,13 @@ class _PodBaseController extends GetxController {
   late BuildContext mainContext;
   late BuildContext fullScreenContext;
 
+  // Zoom functionality
+  double _videoZoomScale = 1.0;
+  double get videoZoomScale => _videoZoomScale;
+  static const double _minZoomScale = 0.5;
+  static const double _maxZoomScale = 3.0;
+  static const double _zoomStep = 0.25;
+
   ///**listners
 
   Future<void> videoListner() async {
@@ -111,6 +118,51 @@ class _PodBaseController extends GetxController {
         keyboardFocusWeb!.requestFocus();
       }
     }
+  }
+
+  /// Zoom in the video
+  void zoomIn() {
+    if (_videoZoomScale < _maxZoomScale) {
+      _videoZoomScale = (_videoZoomScale + _zoomStep).clamp(_minZoomScale, _maxZoomScale);
+      update(['zoom']);
+      update(['update-all']);
+    }
+  }
+
+  /// Zoom out the video
+  void zoomOut() {
+    if (_videoZoomScale > _minZoomScale) {
+      _videoZoomScale = (_videoZoomScale - _zoomStep).clamp(_minZoomScale, _maxZoomScale);
+      update(['zoom']);
+      update(['update-all']);
+    }
+  }
+
+  /// Reset zoom to default (1.0)
+  void resetZoom() {
+    _videoZoomScale = 1.0;
+    update(['zoom']);
+    update(['update-all']);
+  }
+
+  /// Set specific zoom scale
+  void setZoomScale(double scale) {
+    _videoZoomScale = scale.clamp(_minZoomScale, _maxZoomScale);
+    update(['zoom']);
+    update(['update-all']);
+  }
+
+  /// Toggle between zoom levels (1.0x, 1.5x, 2.0x)
+  void toggleZoom() {
+    if (_videoZoomScale == 1.0) {
+      _videoZoomScale = 1.5;
+    } else if (_videoZoomScale == 1.5) {
+      _videoZoomScale = 2.0;
+    } else {
+      _videoZoomScale = 1.0;
+    }
+    update(['zoom']);
+    update(['update-all']);
   }
 
   // void keyboadFullScreenListner() {

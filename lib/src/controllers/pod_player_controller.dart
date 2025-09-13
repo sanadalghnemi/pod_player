@@ -268,4 +268,24 @@ class PodPlayerController {
 
   /// Show overlay of video
   void showOverlay() => _ctr.isShowOverlay(true);
+
+  //! Zoom Controls
+
+  /// Get current zoom scale
+  double get zoomScale => _ctr.videoZoomScale;
+
+  /// Zoom in the video
+  void zoomIn() => _ctr.zoomIn();
+
+  /// Zoom out the video
+  void zoomOut() => _ctr.zoomOut();
+
+  /// Reset zoom to default (1.0x)
+  void resetZoom() => _ctr.resetZoom();
+
+  /// Set specific zoom scale (0.5x to 3.0x)
+  void setZoomScale(double scale) => _ctr.setZoomScale(scale);
+
+  /// Toggle between zoom levels (1.0x, 1.5x, 2.0x)
+  void toggleZoom() => _ctr.toggleZoom();
 }
