@@ -71,26 +71,41 @@ class _MobileOverlay extends StatelessWidget {
                     MaterialIconButton(
                       toolTipMesg: 'Zoom Out',
                       color: itemColor,
-                      onPressed: podCtr.videoZoomScale > 0.5 ? podCtr.zoomOut : null,
+                      onPressed: () {
+                        if (podCtr.videoZoomScale > 0.5) {
+                          podCtr.zoomOut();
+                        }
+                      },
                       child: const Icon(Icons.zoom_out),
                     ),
                     MaterialIconButton(
                       toolTipMesg: 'Reset Zoom',
                       color: itemColor,
-                      onPressed: podCtr.videoZoomScale != 1.0 ? podCtr.resetZoom : null,
-                      child: Text(
-                        '${(podCtr.videoZoomScale * 100).round()}%',
-                        style: const TextStyle(
-                          color: itemColor,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
+                      onPressed: () {
+                        if (podCtr.videoZoomScale != 1.0) {
+                          podCtr.resetZoom();
+                        }
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: Text(
+                          '${(podCtr.videoZoomScale * 100).round()}%',
+                          style: const TextStyle(
+                            color: itemColor,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
                     MaterialIconButton(
                       toolTipMesg: 'Zoom In',
                       color: itemColor,
-                      onPressed: podCtr.videoZoomScale < 3.0 ? podCtr.zoomIn : null,
+                      onPressed: () {
+                        if (podCtr.videoZoomScale < 3.0) {
+                          podCtr.zoomIn();
+                        }
+                      },
                       child: const Icon(Icons.zoom_in),
                     ),
                   ],

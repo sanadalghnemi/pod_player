@@ -157,6 +157,56 @@ class _WebOverlayBottomControlles extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     child: Row(
                       children: [
+                        // Zoom controls for web
+                        GetBuilder<PodGetXVideoController>(
+                          tag: tag,
+                          id: 'zoom',
+                          builder: (podCtr) => Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              MaterialIconButton(
+                                toolTipMesg: 'Zoom Out (-)',
+                                color: itemColor,
+                                onPressed: () {
+                                  if (podCtr.videoZoomScale > 0.5) {
+                                    podCtr.zoomOut();
+                                  }
+                                },
+                                child: const Icon(Icons.zoom_out),
+                              ),
+                              MaterialIconButton(
+                                toolTipMesg: 'Reset Zoom (0)',
+                                color: itemColor,
+                                onPressed: () {
+                                  if (podCtr.videoZoomScale != 1.0) {
+                                    podCtr.resetZoom();
+                                  }
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                                  child: Text(
+                                    '${(podCtr.videoZoomScale * 100).round()}%',
+                                    style: const TextStyle(
+                                      color: itemColor,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              MaterialIconButton(
+                                toolTipMesg: 'Zoom In (+)',
+                                color: itemColor,
+                                onPressed: () {
+                                  if (podCtr.videoZoomScale < 3.0) {
+                                    podCtr.zoomIn();
+                                  }
+                                },
+                                child: const Icon(Icons.zoom_in),
+                              ),
+                            ],
+                          ),
+                        ),
                         _WebSettingsDropdown(tag: tag),
                         MaterialIconButton(
                           toolTipMesg: podCtr.isFullScreen

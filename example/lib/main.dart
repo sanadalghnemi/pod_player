@@ -3,6 +3,7 @@ import 'package:example/screens/from_network.dart';
 import 'package:example/screens/from_network_urls.dart';
 import 'package:example/screens/from_vimeo_private_id.dart';
 import 'package:example/screens/from_youtube.dart';
+import 'package:example/screens/zoom_test.dart';
 import 'package:flutter/material.dart';
 import 'package:pod_player/pod_player.dart';
 
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         '/fromNetworkQualityUrls': (context) =>
             const PlayVideoFromNetworkQualityUrls(),
         '/customVideo': (context) => const CustomVideoControlls(),
+        '/zoomTest': (context) => const ZoomTestScreen(),
       },
       home: const MainPage(),
     );
@@ -81,6 +83,10 @@ class _MainPageState extends State<MainPage> {
             _button(
               'Custom Video player',
               onPressed: () => Navigator.of(context).pushNamed('/customVideo'),
+            ),
+            _button(
+              'Zoom Test',
+              onPressed: () => Navigator.of(context).pushNamed('/zoomTest'),
             ),
           ],
         ),
