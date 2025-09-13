@@ -288,4 +288,13 @@ class PodPlayerController {
 
   /// Toggle between zoom levels (1.0x, 1.5x, 2.0x)
   void toggleZoom() => _ctr.toggleZoom();
+
+  /// Get current pan offset
+  Offset get panOffset => _ctr.panOffset;
+
+  /// Set pan offset for zoomed video
+  void setPanOffset(Offset focalPoint) => _ctr.setPanOffset(focalPoint);
+
+  /// Update pan offset during drag
+  void updatePanOffset(Offset delta) => _ctr.updatePanOffset(delta);
 }

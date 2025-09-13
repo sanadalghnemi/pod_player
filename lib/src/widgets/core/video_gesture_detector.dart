@@ -1,6 +1,6 @@
 part of 'package:pod_player/src/pod_player.dart';
 
-class _VideoGestureDetector extends StatelessWidget {
+class _VideoGestureDetector extends StatefulWidget {
   final Widget? child;
   final void Function()? onDoubleTap;
   final void Function()? onTap;
@@ -14,15 +14,80 @@ class _VideoGestureDetector extends StatelessWidget {
   });
 
   @override
+  State<_VideoGestureDetector> createState() => _VideoGestureDetectorState();
+}
+
+class _VideoGestureDetectorState extends State<_VideoGestureDetector> {
+  double _baseScaleFactor = 1;
+  Timer? _gestureTimer;
+
+
+  @override
+  void dispose() {
+    _gestureTimer?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final podCtr = Get.find<PodGetXVideoController>(tag: tag);
+    final podCtr = Get.find<PodGetXVideoController>(tag: widget.tag);
+    
     return MouseRegion(
       onHover: (event) => podCtr.onOverlayHover(),
       onExit: (event) => podCtr.onOverlayHoverExit(),
       child: GestureDetector(
-        onTap: onTap ?? podCtr.toggleVideoOverlay,
-        onDoubleTap: onDoubleTap,
-        child: child,
+        onTap: widget.onTap ?? podCtr.toggleVideoOverlay,
+        onDoubleTap: widget.onDoubleTap,
+        onScaleStart: (details) {
+          _baseScaleFactor = podCtr.videoZoomScale;
+          
+          // Hide overlay during gesture
+          podCtr.isShowOverlay(false);
+          _gestureTimer?.cancel();
+        },
+        onScaleUpdate: (details) {
+          if (details.pointerCount == 2 && details.scale != 1) {
+            // Pinch to zoom with two fingers
+            final newScale = (_baseScaleFactor * details.scale)
+                .clamp(0.5, 3.0);
+            
+            podCtr.setZoomScale(newScale);
+            
+            // Update pan offset based on focal point
+            if (newScale > 1) {
+              podCtr.setPanOffset(details.focalPoint);
+            }
+          }
+        },
+        onScaleEnd: (details) {
+          // Show overlay again after a delay
+          _gestureTimer = Timer(const Duration(milliseconds: 1000), () {
+            if (mounted) {
+              podCtr.isShowOverlay(true);
+            }
+          });
+        },
+        onPanStart: (details) {
+          if (podCtr.videoZoomScale > 1) {
+            podCtr.isShowOverlay(false);
+            _gestureTimer?.cancel();
+          }
+        },
+        onPanUpdate: (details) {
+          if (podCtr.videoZoomScale > 1) {
+            podCtr.updatePanOffset(details.delta);
+          }
+        },
+        onPanEnd: (details) {
+          if (podCtr.videoZoomScale > 1) {
+            _gestureTimer = Timer(const Duration(milliseconds: 1000), () {
+              if (mounted) {
+                podCtr.isShowOverlay(true);
+              }
+            });
+          }
+        },
+        child: widget.child,
       ),
     );
   }

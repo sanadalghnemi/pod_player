@@ -94,44 +94,46 @@ class _PodGesturesController extends _PodVideoQualityController {
   static const double _maxZoomScale = 3;
   static const double _zoomStep = 0.25;
 
-  /// Zoom in the video
+  // Pan offset for zoomed video
+  Offset _panOffset = Offset.zero;
+  
   @override
+  Offset get panOffset => _panOffset;
+
+  /// Zoom in the video
   void zoomIn() {
     if (_videoZoomScale < _maxZoomScale) {
-      _videoZoomScale = (_videoZoomScale + _zoomStep).clamp(_minZoomScale, _maxZoomScale).toDouble();
+      _videoZoomScale = (_videoZoomScale + _zoomStep).clamp(_minZoomScale, _maxZoomScale);
       update(['zoom']);
       update(['update-all']);
     }
   }
 
   /// Zoom out the video
-  @override
   void zoomOut() {
     if (_videoZoomScale > _minZoomScale) {
-      _videoZoomScale = (_videoZoomScale - _zoomStep).clamp(_minZoomScale, _maxZoomScale).toDouble();
+      _videoZoomScale = (_videoZoomScale - _zoomStep).clamp(_minZoomScale, _maxZoomScale);
       update(['zoom']);
       update(['update-all']);
     }
   }
 
   /// Reset zoom to default (1.0)
-  @override
   void resetZoom() {
     _videoZoomScale = 1;
+    _panOffset = Offset.zero;
     update(['zoom']);
     update(['update-all']);
   }
 
   /// Set specific zoom scale
-  @override
   void setZoomScale(double scale) {
-    _videoZoomScale = scale.clamp(_minZoomScale, _maxZoomScale).toDouble();
+    _videoZoomScale = scale.clamp(_minZoomScale, _maxZoomScale);
     update(['zoom']);
     update(['update-all']);
   }
 
   /// Toggle between zoom levels (1.0x, 1.5x, 2.0x)
-  @override
   void toggleZoom() {
     if (_videoZoomScale == 1) {
       _videoZoomScale = 1.5;
@@ -139,8 +141,45 @@ class _PodGesturesController extends _PodVideoQualityController {
       _videoZoomScale = 2;
     } else {
       _videoZoomScale = 1;
+      _panOffset = Offset.zero;
     }
     update(['zoom']);
     update(['update-all']);
+  }
+
+  /// Set pan offset for zoomed video
+  void setPanOffset(Offset focalPoint) {
+    if (_videoZoomScale > 1) {
+      // Calculate the maximum allowed pan offset based on zoom level
+      final maxOffset = 150 * (_videoZoomScale - 1);
+      
+      // Convert focal point to pan offset (relative to center)
+      final centerOffset = focalPoint - const Offset(200, 200); // Approximate center
+      
+      _panOffset = Offset(
+        centerOffset.dx.clamp(-maxOffset, maxOffset),
+        centerOffset.dy.clamp(-maxOffset, maxOffset),
+      );
+      
+      update(['zoom']);
+      update(['update-all']);
+    } else {
+      _panOffset = Offset.zero;
+    }
+  }
+
+  /// Update pan offset during drag
+  void updatePanOffset(Offset delta) {
+    if (_videoZoomScale > 1) {
+      final maxOffset = 150 * (_videoZoomScale - 1);
+      
+      _panOffset = Offset(
+        (_panOffset.dx + delta.dx).clamp(-maxOffset, maxOffset),
+        (_panOffset.dy + delta.dy).clamp(-maxOffset, maxOffset),
+      );
+      
+      update(['zoom']);
+      update(['update-all']);
+    }
   }
 }

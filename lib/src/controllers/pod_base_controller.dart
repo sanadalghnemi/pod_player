@@ -40,6 +40,9 @@ class _PodBaseController extends GetxController {
   // Zoom functionality
   double _videoZoomScale = 1;
   double get videoZoomScale => _videoZoomScale;
+  
+  // Pan functionality
+  Offset get panOffset => Offset.zero;
 
   ///**listners
 
