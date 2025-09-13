@@ -178,7 +178,7 @@ class _WebOverlayBottomControlles extends StatelessWidget {
                                 toolTipMesg: 'Reset Zoom (0)',
                                 color: itemColor,
                                 onPressed: () {
-                                  if (podCtr.videoZoomScale != 1.0) {
+                                  if (podCtr.videoZoomScale != 1) {
                                     podCtr.resetZoom();
                                   }
                                 },

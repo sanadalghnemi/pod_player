@@ -89,46 +89,56 @@ class _PodGesturesController extends _PodVideoQualityController {
     update(['update-all']);
   }
 
+  // Zoom constants
+  static const double _minZoomScale = 0.5;
+  static const double _maxZoomScale = 3;
+  static const double _zoomStep = 0.25;
+
   /// Zoom in the video
+  @override
   void zoomIn() {
     if (_videoZoomScale < _maxZoomScale) {
-      _videoZoomScale = (_videoZoomScale + _zoomStep).clamp(_minZoomScale, _maxZoomScale);
+      _videoZoomScale = (_videoZoomScale + _zoomStep).clamp(_minZoomScale, _maxZoomScale).toDouble();
       update(['zoom']);
       update(['update-all']);
     }
   }
 
   /// Zoom out the video
+  @override
   void zoomOut() {
     if (_videoZoomScale > _minZoomScale) {
-      _videoZoomScale = (_videoZoomScale - _zoomStep).clamp(_minZoomScale, _maxZoomScale);
+      _videoZoomScale = (_videoZoomScale - _zoomStep).clamp(_minZoomScale, _maxZoomScale).toDouble();
       update(['zoom']);
       update(['update-all']);
     }
   }
 
   /// Reset zoom to default (1.0)
+  @override
   void resetZoom() {
-    _videoZoomScale = 1.0;
+    _videoZoomScale = 1;
     update(['zoom']);
     update(['update-all']);
   }
 
   /// Set specific zoom scale
+  @override
   void setZoomScale(double scale) {
-    _videoZoomScale = scale.clamp(_minZoomScale, _maxZoomScale);
+    _videoZoomScale = scale.clamp(_minZoomScale, _maxZoomScale).toDouble();
     update(['zoom']);
     update(['update-all']);
   }
 
   /// Toggle between zoom levels (1.0x, 1.5x, 2.0x)
+  @override
   void toggleZoom() {
-    if (_videoZoomScale == 1.0) {
+    if (_videoZoomScale == 1) {
       _videoZoomScale = 1.5;
     } else if (_videoZoomScale == 1.5) {
-      _videoZoomScale = 2.0;
+      _videoZoomScale = 2;
     } else {
-      _videoZoomScale = 1.0;
+      _videoZoomScale = 1;
     }
     update(['zoom']);
     update(['update-all']);
