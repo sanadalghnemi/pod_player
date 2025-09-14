@@ -15,40 +15,37 @@ class _MobileOverlay extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
-        _VideoGestureDetector(
-          tag: tag,
-          child: ColoredBox(
-            color: overlayColor,
-            child: Row(
-              children: [
-                Expanded(
-                  child: DoubleTapIcon(
-                    tag: tag,
-                    isForward: false,
-                    height: double.maxFinite,
-                    onDoubleTap: _isRtl()
-                        ? podCtr.onRightDoubleTap
-                        : podCtr.onLeftDoubleTap,
-                  ),
+        ColoredBox(
+          color: overlayColor,
+          child: Row(
+            children: [
+              Expanded(
+                child: DoubleTapIcon(
+                  tag: tag,
+                  isForward: false,
+                  height: double.maxFinite,
+                  onDoubleTap: _isRtl()
+                      ? podCtr.onRightDoubleTap
+                      : podCtr.onLeftDoubleTap,
                 ),
-                SizedBox(
-                  height: double.infinity,
-                  child: Center(
-                    child: _AnimatedPlayPauseIcon(tag: tag, size: 42),
-                  ),
+              ),
+              SizedBox(
+                height: double.infinity,
+                child: Center(
+                  child: _AnimatedPlayPauseIcon(tag: tag, size: 42),
                 ),
-                Expanded(
-                  child: DoubleTapIcon(
-                    isForward: true,
-                    tag: tag,
-                    height: double.maxFinite,
-                    onDoubleTap: _isRtl()
-                        ? podCtr.onLeftDoubleTap
-                        : podCtr.onRightDoubleTap,
-                  ),
+              ),
+              Expanded(
+                child: DoubleTapIcon(
+                  isForward: true,
+                  tag: tag,
+                  height: double.maxFinite,
+                  onDoubleTap: _isRtl()
+                      ? podCtr.onLeftDoubleTap
+                      : podCtr.onRightDoubleTap,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
         Align(

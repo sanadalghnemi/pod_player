@@ -41,9 +41,11 @@ class _VideoGestureDetectorState extends State<_VideoGestureDetector> {
         onScaleStart: (details) {
           _baseScaleFactor = podCtr.videoZoomScale;
           
-          // Hide overlay during gesture
-          podCtr.isShowOverlay(false);
-          _gestureTimer?.cancel();
+          // Only hide overlay if this is a multi-finger gesture (zoom/pan)
+          if (details.pointerCount > 1) {
+            podCtr.isShowOverlay(false);
+            _gestureTimer?.cancel();
+          }
         },
         onScaleUpdate: (details) {
           if (details.pointerCount == 2 && details.scale != 1) {
@@ -57,29 +59,14 @@ class _VideoGestureDetectorState extends State<_VideoGestureDetector> {
             if (newScale > 1) {
               podCtr.setPanOffset(details.focalPoint);
             }
+          } else if (details.pointerCount == 1 && podCtr.videoZoomScale > 1) {
+            // Single finger pan when zoomed in
+            podCtr.updatePanOffset(details.focalPointDelta);
           }
         },
         onScaleEnd: (details) {
-          // Show overlay again after a delay
-          _gestureTimer = Timer(const Duration(milliseconds: 1000), () {
-            if (mounted) {
-              podCtr.isShowOverlay(true);
-            }
-          });
-        },
-        onPanStart: (details) {
-          if (podCtr.videoZoomScale > 1) {
-            podCtr.isShowOverlay(false);
-            _gestureTimer?.cancel();
-          }
-        },
-        onPanUpdate: (details) {
-          if (podCtr.videoZoomScale > 1) {
-            podCtr.updatePanOffset(details.delta);
-          }
-        },
-        onPanEnd: (details) {
-          if (podCtr.videoZoomScale > 1) {
+          // Only show overlay again if this was a multi-finger gesture
+          if (details.pointerCount > 1 || podCtr.videoZoomScale > 1) {
             _gestureTimer = Timer(const Duration(milliseconds: 1000), () {
               if (mounted) {
                 podCtr.isShowOverlay(true);

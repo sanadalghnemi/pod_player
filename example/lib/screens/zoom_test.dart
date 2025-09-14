@@ -50,51 +50,72 @@ class _ZoomTestScreenState extends State<ZoomTestScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            PodVideoPlayer(controller: controller),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: () => controller.zoomOut(),
-                  child: const Text('Zoom Out'),
-                ),
-                ElevatedButton(
-                  onPressed: () => controller.resetZoom(),
-                  child: const Text('Reset'),
-                ),
-                ElevatedButton(
-                  onPressed: () => controller.zoomIn(),
-                  child: const Text('Zoom In'),
-                ),
-              ],
+            Expanded(
+              child: PodVideoPlayer(controller: controller),
             ),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: () => controller.setZoomScale(0.5),
-                  child: const Text('0.5x'),
-                ),
-                ElevatedButton(
-                  onPressed: () => controller.setZoomScale(1.0),
-                  child: const Text('1.0x'),
-                ),
-                ElevatedButton(
-                  onPressed: () => controller.setZoomScale(1.5),
-                  child: const Text('1.5x'),
-                ),
-                ElevatedButton(
-                  onPressed: () => controller.setZoomScale(2.0),
-                  child: const Text('2.0x'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () => controller.toggleZoom(),
-              child: const Text('Toggle Zoom'),
+            Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  const Text(
+                    'Gesture Controls:',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text('🤏 Pinch with two fingers to zoom in/out'),
+                  const Text('👆 Pan with one finger when zoomed in'),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Button Controls:',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () => controller.zoomOut(),
+                        child: const Text('Zoom Out'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () => controller.resetZoom(),
+                        child: const Text('Reset'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () => controller.zoomIn(),
+                        child: const Text('Zoom In'),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () => controller.setZoomScale(0.5),
+                        child: const Text('0.5x'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () => controller.setZoomScale(1.0),
+                        child: const Text('1.0x'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () => controller.setZoomScale(1.5),
+                        child: const Text('1.5x'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () => controller.setZoomScale(2.0),
+                        child: const Text('2.0x'),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () => controller.toggleZoom(),
+                    child: const Text('Toggle Zoom'),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

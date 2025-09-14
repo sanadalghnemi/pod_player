@@ -28,25 +28,27 @@ class _PodCoreVideoPlayer extends StatelessWidget {
             appContext: ctrx,
             tag: tag,
           ),
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              GetBuilder<PodGetXVideoController>(
-                tag: tag,
-                id: 'zoom',
-                builder: (podCtr) => Center(
-                  child: Transform.translate(
-                    offset: podCtr.panOffset,
-                    child: Transform.scale(
-                      scale: podCtr.videoZoomScale,
-                      child: AspectRatio(
-                        aspectRatio: videoAspectRatio,
-                        child: VideoPlayer(videoPlayerCtr),
+          child: _VideoGestureDetector(
+            tag: tag,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                GetBuilder<PodGetXVideoController>(
+                  tag: tag,
+                  id: 'zoom',
+                  builder: (podCtr) => Center(
+                    child: Transform.translate(
+                      offset: podCtr.panOffset,
+                      child: Transform.scale(
+                        scale: podCtr.videoZoomScale,
+                        child: AspectRatio(
+                          aspectRatio: videoAspectRatio,
+                          child: VideoPlayer(videoPlayerCtr),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
               GetBuilder<PodGetXVideoController>(
                 tag: tag,
                 id: 'podVideoState',
@@ -155,7 +157,8 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                         ),
                 ),
               if (watermark != null) MovingWatermark(child: watermark!),
-            ],
+              ],
+            ),
           ),
         );
       },
